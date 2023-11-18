@@ -1,3 +1,11 @@
+CREATE TABLE user_table (
+  userId INT AUTO_INCREMENT NOT NULL,
+  username VARCHAR(255) UNIQUE,
+  password VARCHAR(100),
+  role VARCHAR(25),
+  PRIMARY KEY(userId)
+);
+
 CREATE TABLE actors (
   actorId INT AUTO_INCREMENT NOT NULL,
   name VARCHAR(25),

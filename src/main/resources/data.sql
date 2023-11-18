@@ -1,3 +1,7 @@
+INSERT INTO user_table (username, password, role) VALUES
+('user','$2a$10$NVM0n8ElaRgg7zWO1CxUdei7vWoPg91Lz2aYavh9.f9q0e4bRadue','USER'),
+('admin','$2a$10$8cjz47bjbR4Mn8GMg9IZx.vyjhLXR/SKKMSZ9.mP9vpMu0ssKi8GW','ADMIN');
+
 INSERT INTO actors (name, age, portrait, about) VALUES
 ('Brad Pitt', 59, 'https://media.gettyimages.com/id/1200624305/photo/los-angeles-california-brad-pitt-winner-outstanding-performance-by-a-male-actor-in-a.jpg?s=612x612&w=0&k=20&c=nmrZxUOwJhfwjzfDRWMOZWvkQl-Wg6K4XO89GnWJqlk=', 'William Bradley Pitt is an American actor and film producer. He is the recipient of various accolades, including two Academy Awards, a British Academy Film Award, two Golden Globe Awards, and a Primetime Emmy Award.'),
 ('Chris Pratt', 44, 'https://media.gettyimages.com/id/452657110/photo/london-united-kingdom-chris-pratt-attends-the-guardians-of-the-galacy-photocall-on-july-25.jpg?s=612x612&w=0&k=20&c=d3ORzrPY-pBgZ5YR1aHgwwmGpQhr48HiiMA0g60FXBo=', 'Christopher Michael Pratt is an American actor. He rose to prominence for playing Andy Dwyer in the NBC sitcom Parks and Recreation. He also appeared in The WB drama series Everwood and had supporting roles in the films Wanted, Jennifer''s Body, Moneyball, Zero Dark Thirty, and Her.'),
