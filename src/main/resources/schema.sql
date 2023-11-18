@@ -14,3 +14,14 @@ CREATE TABLE actors (
   about VARCHAR(1000),
   PRIMARY KEY(actorId)
 );
+
+CREATE TABLE UsersMoviesToWatch (
+  entryId INT AUTO_INCREMENT NOT NULL,
+  userId INT,
+  movieTitle VARCHAR(255),
+  movieOverview VARCHAR(1000),
+  releaseDate DATE,
+  posterPath VARCHAR(1000),
+  PRIMARY KEY(entryId),
+  FOREIGN KEY (userId) REFERENCES user_table(userId)
+);
