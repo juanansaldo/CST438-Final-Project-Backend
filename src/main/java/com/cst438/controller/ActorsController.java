@@ -72,9 +72,9 @@ public class ActorsController {
     	
     	User user = userRepository.findByUsername(username);
     	
-    	if (!user.getRole().equals("ADMIN")) {
-    		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not an admin.");
-    	}
+        if (user == null || !user.getRole().equals("ADMIN")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not an admin or not found.");
+        }
     	
         // Create a new actor
         Actor a = new Actor();
@@ -97,9 +97,9 @@ public class ActorsController {
     	
     	User user = userRepository.findByUsername(username);
     	
-    	if (!user.getRole().equals("ADMIN")) {
-    		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not an admin.");
-    	}
+        if (user == null || !user.getRole().equals("ADMIN")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not an admin or not found.");
+        }
     	
     	// Check if the actor exists in the repository
         Optional<Actor> actorOptional = actorRepository.findById(id);
@@ -128,9 +128,9 @@ public class ActorsController {
     	
     	User user = userRepository.findByUsername(username);
     	
-    	if (!user.getRole().equals("ADMIN")) {
-    		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not an admin.");
-    	}
+        if (user == null || !user.getRole().equals("ADMIN")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not an admin or not found.");
+        }
     	
     	// Check if the actor exists in the repository
         Optional<Actor> actorOptional = actorRepository.findById(id);
