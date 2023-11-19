@@ -108,6 +108,30 @@ public class JunitTestActors {
         String content = response.getContentAsString();
         assertFalse(content.isEmpty(), "Response content is empty");
     }
+    
+    @Test
+    @WithMockUser(username = "user", roles = {"USER"})
+    public void createActorAsUser() throws Exception {
+        Actor newActor = new Actor();
+        
+        newActor.setName("Juan Ansaldo");
+        newActor.setAge(25);
+        newActor.setPortrait("test.jpg");
+        newActor.setAbout("Computer Science Student at CSU Monterey Bay.");
+
+        String actorJson = objectMapper.writeValueAsString(newActor);
+
+        MockHttpServletResponse response = mvc.perform(
+                MockMvcRequestBuilders
+                        .post("/actors/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(actorJson)
+                        .accept(MediaType.APPLICATION_JSON))
+                	  .andReturn().getResponse();
+
+        // Verify that the post request failed
+        assertEquals(400, response.getStatus());
+    }
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
@@ -127,6 +151,26 @@ public class JunitTestActors {
 
         // Verify that the put request was successful
         assertEquals(200, response.getStatus());
+    }
+    
+    @Test
+    @WithMockUser(username = "user", roles = {"User"})
+    public void updateActorAsUser() throws Exception {
+        Actor updateActor = new Actor();
+        updateActor.setName("Bradley Pitt");
+
+        String actorJson = objectMapper.writeValueAsString(updateActor);
+
+        MockHttpServletResponse response = mvc.perform(
+                MockMvcRequestBuilders
+                        .put("/actors/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(actorJson)
+                        .accept(MediaType.APPLICATION_JSON))
+                	  .andReturn().getResponse();
+
+        // Verify that the put request failed
+        assertEquals(400, response.getStatus());
     }
 
     @Test
@@ -162,6 +206,30 @@ public class JunitTestActors {
         // Verify that the get request fails
         assertEquals(404, response.getStatus());
     }
+    
+    @Test
+    @WithMockUser(username = "user", roles = {"USER"})
+    public void deleteActorAsUser() throws Exception {
+    	// Verify that the actor exists
+        MockHttpServletResponse response = mvc.perform(
+                MockMvcRequestBuilders
+                        .get("/actors/1")
+                        .accept(MediaType.APPLICATION_JSON))
+                	  .andReturn().getResponse();
+
+        // Verify that the get request was successful
+        assertEquals(200, response.getStatus());
+
+        // Delete the actor
+        response = mvc.perform(
+                MockMvcRequestBuilders
+                        .delete("/actors/1")
+                        .accept(MediaType.APPLICATION_JSON))
+                	  .andReturn().getResponse();
+
+        // Verify that the delete request failed
+        assertEquals(400, response.getStatus());
+    }
 
     @Test
     @WithMockUser(username = "admin", roles = {"ADMIN"})
@@ -181,5 +249,25 @@ public class JunitTestActors {
 
         // Verify that the put request fails
         assertEquals(404, response.getStatus());
+    }
+    
+    @Test
+    @WithMockUser(username = "user", roles = {"USER"})
+    public void updateNonExistingActorAsUser() throws Exception {
+        Actor updateActor = new Actor();
+        
+        updateActor.setName("Fabian Santano");
+        
+        String actorJson = objectMapper.writeValueAsString(updateActor);
+
+        MockHttpServletResponse response = mvc.perform(
+                MockMvcRequestBuilders.put("/actors/9999")
+                    	.contentType(MediaType.APPLICATION_JSON)
+                    	.content(actorJson)
+                    	.accept(MediaType.APPLICATION_JSON))
+                	  .andReturn().getResponse();
+
+        // Verify that the put request failed
+        assertEquals(400, response.getStatus());
     }
 }
