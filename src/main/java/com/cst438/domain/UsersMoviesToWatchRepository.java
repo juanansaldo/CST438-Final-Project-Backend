@@ -8,4 +8,6 @@ public interface UsersMoviesToWatchRepository extends CrudRepository<UsersMovies
 	List<UsersMoviesToWatch> findByUserId(int id);
     
     void deleteById(int id);
+    
+    UsersMoviesToWatch findByUserIdAndMovieTitle(int userId, String movieTitle);
 }
