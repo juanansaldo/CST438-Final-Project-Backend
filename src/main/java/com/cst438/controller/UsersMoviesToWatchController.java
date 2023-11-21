@@ -12,7 +12,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,9 +52,9 @@ public class UsersMoviesToWatchController {
             }
         }
         
-        // Check if the user has already added 5 movies
-        if (userMovies.size() >= 5) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You can only add up to 5 movies.");
+        // Check if the user has already added 10 movies
+        if (userMovies.size() >= 10) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You can only add up to 10 movies.");
         }
 
         // Create and save the UsersMoviesToWatch entity. Return generated id to the client.
@@ -100,5 +102,27 @@ public class UsersMoviesToWatchController {
                 .collect(Collectors.toList());
 
         return userMoviesDTO;
+    }
+    
+    @DeleteMapping("/deleteFromWatch/{movieTitle}")
+    public void deleteMovieFromWatchList(@PathVariable("movieTitle") String movieTitle, Principal principal) {
+        // Get the username from Principal
+        String username = principal.getName();
+
+        // Retrieve the user from the repository using the username
+        User user = userRepository.findByUsername(username);
+
+        // Get the user ID
+        int userId = user.getId();
+
+        // Find the movie in the user's watch list
+        UsersMoviesToWatch movieToDelete = usersMoviesToWatchRepository.findByUserIdAndMovieTitle(userId, movieTitle);
+
+        if (movieToDelete != null) {
+            // Delete the movie from the watch list
+            usersMoviesToWatchRepository.delete(movieToDelete);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The movie was not found in the watch list.");
+        }
     }
 }
