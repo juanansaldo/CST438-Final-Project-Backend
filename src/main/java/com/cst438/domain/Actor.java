@@ -1,5 +1,7 @@
 package com.cst438.domain;
 
+import java.time.LocalDate;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,7 +13,7 @@ public class Actor {
     private int actorId;
 
     private String name;
-    private int age;
+    private LocalDate dob;
     private String portrait;
     private String about;
 
@@ -19,9 +21,9 @@ public class Actor {
     	super();
     }
     
-    public Actor(String name, int age, String portrait, String about) {
+    public Actor(String name, LocalDate dob, String portrait, String about) {
 	this.name = name;
-	this.age = age;
+	this.dob = dob;
 	this.portrait = portrait;
 	this.about = about;
     }
@@ -38,12 +40,12 @@ public class Actor {
         this.name = name;
     }
 
-    public int getAge() {
-        return age;
+    public LocalDate getDOB() {
+        return dob;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setDOB(LocalDate dob) {
+        this.dob = dob;
     }
 
     public String getPortrait() {
@@ -64,6 +66,6 @@ public class Actor {
 
     @Override
     public String toString() {
-        return "Actor [actorId=" + actorId + ", name=" + name + ", age=" + age + ", portrait=" + portrait + ", about=" + about + "]";
+        return "Actor [actorId=" + actorId + ", name=" + name + ", dob=" + dob + ", portrait=" + portrait + ", about=" + about + "]";
     }
 }

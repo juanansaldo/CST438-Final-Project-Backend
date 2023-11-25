@@ -41,7 +41,7 @@ public class ActorsController {
 
         // Convert each Actor to ActorDTO and add to the list
         for (Actor a : actors) {
-            ActorDTO d = new ActorDTO(a.getActorId(), a.getName(), a.getAge(), a.getPortrait(), a.getAbout());
+            ActorDTO d = new ActorDTO(a.getActorId(), a.getName(), a.getDOB(), a.getPortrait(), a.getAbout());
             actorList.add(d);
         }
 
@@ -58,7 +58,7 @@ public class ActorsController {
         if (actorOptional.isPresent()) {
             // If the actor is found, convert it to a ActorDTO and return
             Actor a = actorOptional.get();
-            return new ActorDTO(a.getActorId(), a.getName(), a.getAge(), a.getPortrait(), a.getAbout());
+            return new ActorDTO(a.getActorId(), a.getName(), a.getDOB(), a.getPortrait(), a.getAbout());
         } else {
             // If the actor is not found, throw an error
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Actor not found.");
@@ -79,7 +79,7 @@ public class ActorsController {
         // Create a new actor
         Actor a = new Actor();
         a.setName(actorDTO.name());
-        a.setAge(actorDTO.age());
+        a.setDOB(actorDTO.dob());
         a.setPortrait(actorDTO.portrait());
         a.setAbout(actorDTO.about());
         
@@ -113,7 +113,7 @@ public class ActorsController {
 
         // Update the actor details
         actor.setName(actorDTO.name());
-        actor.setAge(actorDTO.age());
+        actor.setDOB(actorDTO.dob());
         actor.setPortrait(actorDTO.portrait());
         actor.setAbout(actorDTO.about());
 

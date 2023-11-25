@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -85,9 +87,10 @@ public class JunitTestActors {
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     public void createActor() throws Exception {
         Actor newActor = new Actor();
+        LocalDate dob = LocalDate.of(1998, 3, 17);
         
         newActor.setName("Juan Ansaldo");
-        newActor.setAge(25);
+        newActor.setDOB(dob);
         newActor.setPortrait("test.jpg");
         newActor.setAbout("Computer Science Student at CSU Monterey Bay.");
 
@@ -113,9 +116,10 @@ public class JunitTestActors {
     @WithMockUser(username = "user", roles = {"USER"})
     public void createActorAsUser() throws Exception {
         Actor newActor = new Actor();
+        LocalDate dob = LocalDate.of(1998, 3, 17);
         
         newActor.setName("Juan Ansaldo");
-        newActor.setAge(25);
+        newActor.setDOB(dob);
         newActor.setPortrait("test.jpg");
         newActor.setAbout("Computer Science Student at CSU Monterey Bay.");
 
