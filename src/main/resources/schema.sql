@@ -9,7 +9,7 @@ CREATE TABLE user_table (
 CREATE TABLE actors (
   actorId INT AUTO_INCREMENT NOT NULL,
   name VARCHAR(25),
-  age INT,
+  dob DATE,
   portrait VARCHAR(1000),
   about VARCHAR(1000),
   PRIMARY KEY(actorId)
