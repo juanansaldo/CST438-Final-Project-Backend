@@ -84,6 +84,54 @@ public class MoviesController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected response format from TMDb API");
         }
     }
+    @GetMapping("/moviesSearched")
+    public MovieDTO[] getMoviesByKeyword(@RequestParam String keyword, @RequestParam(defaultValue = "1") int page) {
+        String tmdbApiUrl = TMDB_API_BASE_URL + "/search/movie" +
+                "?api_key=" + TMDB_API_KEY +
+                "&query=" + keyword +
+                "&page=" + page;
+
+        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(
+                tmdbApiUrl,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<Map<String, Object>>() {}
+        );
+
+        Map<String, Object> responseMap = responseEntity.getBody();
+
+        if (responseMap != null && responseMap.containsKey("results")) {
+            List<Map<String, Object>> results = (List<Map<String, Object>>) responseMap.get("results");
+            MovieDTO[] movies = new MovieDTO[results.size()];
+
+            for (int i = 0; i < results.size(); i++) {
+                Map<String, Object> result = results.get(i);
+
+                // Add these lines to handle release_date
+                String releaseDateStr = (String) result.get("release_date");
+                LocalDate releaseDate = null;
+
+                if (releaseDateStr != null && !releaseDateStr.isEmpty()) {
+                    releaseDate = LocalDate.parse(releaseDateStr);
+                }
+
+                MovieDTO movieDTO = new MovieDTO(
+                        (int) result.get("id"),
+                        (String) result.get("title"),
+                        (String) result.get("overview"),
+                        releaseDate, // Use the parsed releaseDate or leave it as null if parsing failed
+                        (double) result.get("vote_average"),
+                        (List<Integer>) result.get("genre_ids"),
+                        MovieDTO.generateFullPosterPath((String) result.get("poster_path"))
+                );
+                movies[i] = movieDTO;
+            }
+
+            return movies;
+        } else {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected response format from TMDb API");
+        }
+    }
     
 }
 
