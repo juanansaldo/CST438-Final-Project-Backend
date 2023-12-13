@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -132,6 +133,43 @@ public class MoviesController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected response format from TMDb API");
         }
     }
+    @GetMapping("/movies/{id}")
+    public MovieDTO getMovieById(@PathVariable int id) {
+        String tmdbApiUrl = TMDB_API_BASE_URL + TMDB_API_MOVIE_ENDPOINT + "/" + id +
+                "?api_key=" + TMDB_API_KEY;
+
+        ResponseEntity<Map<String, Object>> responseEntity = restTemplate.exchange(
+                tmdbApiUrl,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<Map<String, Object>>() {}
+        );
+
+        Map<String, Object> result = responseEntity.getBody();
+
+        if (result != null) {
+            // Add these lines to handle release_date
+            String releaseDateStr = (String) result.get("release_date");
+            LocalDate releaseDate = null;
+
+            if (releaseDateStr != null && !releaseDateStr.isEmpty()) {
+                releaseDate = LocalDate.parse(releaseDateStr);
+            }
+
+            return new MovieDTO(
+                    (int) result.get("id"),
+                    (String) result.get("original_title"),
+                    (String) result.get("overview"),
+                    releaseDate, // Use the parsed releaseDate or leave it as null if parsing failed
+                    (double) result.get("vote_average"),
+                    (List<Integer>) result.get("genre_ids"),
+                    MovieDTO.generateFullPosterPath((String) result.get("poster_path"))
+            );
+        } else {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected response format from TMDb API");
+        }
+    }
+
     
 }
 
